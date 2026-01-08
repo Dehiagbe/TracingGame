@@ -1,8 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Enable CORS - In production, restrict this to your domain
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes('*') || (origin && allowedOrigins.includes(origin))) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   

@@ -4,8 +4,14 @@ import { insertAttemptSchema } from '../shared/schema';
 import { z } from 'zod';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Enable CORS - In production, restrict this to your domain
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes('*') || (origin && allowedOrigins.includes(origin))) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
@@ -33,7 +39,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         field: error.errors[0].path.join('.')
       });
     }
-    console.error('API Error:', error);
+    // Structured error logging for Vercel Function Logs
+    console.error('[API Error]', {
+      path: req.url,
+      method: req.method,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
+    });
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
