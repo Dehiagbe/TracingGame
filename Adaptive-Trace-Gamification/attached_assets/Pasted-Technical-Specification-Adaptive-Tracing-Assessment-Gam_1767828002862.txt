@@ -1,0 +1,83 @@
+Technical Specification: Adaptive Tracing Assessment Game (Static Web App)
+
+1. Project Overview
+
+Objective: A minimalist, high-precision tracing game designed for a learner named Sammy. The goal is to assess attention, performance, and behavior. The game must eliminate all distractions and maximize the interactive tracing area.
+Target Environment: Cross-platform (iOS/Android/Web). Optimized for "Kiddie Tablets" (large area) and Smartphones (adaptive zoom).
+Architecture: Pure Static Frontend (HTML5 Canvas + JavaScript). No backend required.
+
+2. Core Gameplay Mechanics
+
+A. The Tracing Path & Boundary
+
+Visuals: Thick, deep-colored dashed lines (#4A4A4A).
+
+Active Boundary: A "Safe Zone" buffer around the path.
+
+Responsive Thickness: The path and boundary must scale based on the device's shortest side (min-dimension) to ensure it is always physically large enough for a human finger (approx. 15-20% of the screen width on phones, 10% on tablets).
+
+Validation: Input is only registered within the boundary. Progress freezes if the user exits the safe zone.
+
+B. Guidance & Idle Intelligence
+
+Intro Demo: Upon task start, a visual pointer automatically traces the shape at a steady pace to demonstrate the required motion.
+
+5-Second Idle Logic: 1.  If no input is detected for 5 seconds, the pointer reappears at the user's current progress point.
+2.  It completes the shape as a "Ghost Trace."
+3.  Once the demo finishes, it snaps back to the user's last position and pulses gently to invite interaction.
+
+C. Adaptive Screen Scaling (Critical)
+
+The "Fill" Mandate: The shape must occupy at least 85% of the viewport.
+
+Tablet Strategy: Utilize the wide/large aspect ratio by centering the shape and using a wider "Comfort Zone" for tracing.
+
+Smartphone Strategy: If the shape is complex (e.g., a long line or large letter), the game should dynamically scale the path to ensure the "turn radius" isn't too tight for a thumb.
+
+Orientation: Support both Portrait and Landscape; the canvas must re-center and re-scale the path immediately on rotation.
+
+3. Visual Assets (Task Sequence)
+
+Fundamental Lines: Horizontal, Vertical, Zig-zag, Wavy, Spiral, and Large Loops.
+
+Basic Geometry: Circle, Square, Triangle, Rectangle.
+
+Complex Geometry: Star, Diamond, Pentagon, Hexagon, Heart, Crescent, and Oval.
+
+4. Technical Best Practices & UX
+
+A. Interaction Handling
+
+Unified Pointer Events: Use pointerdown, pointermove, and pointerup to handle touch and mouse identically.
+
+System Gesture Prevention: * CSS: touch-action: none; to disable scrolling and "pinch-to-zoom."
+
+CSS: overscroll-behavior: none; to prevent "pull-to-refresh" or "swipe-to-go-back."
+
+Zero-Latency Rendering: Use requestAnimationFrame for a consistent 60fps experience.
+
+B. Tracing Logic Details
+
+Path Interpolation: Store shapes as arrays of vectors (x, y). If a user moves their finger very fast, the code must interpolate between the last two points to ensure no gaps in progress.
+
+Visual Feedback: As Sammy traces, the grey dashed line transforms into a solid, vibrant Success Green (#2ECC71).
+
+C. Evaluation Metrics (Observer Summary)
+
+At the completion of the task set, log the following to the console or a hidden summary overlay:
+
+Attention Score: (Total time spent interacting) / (Total task time).
+
+Precision Rate: Percentage of total path length traced within the boundary on the first attempt.
+
+Assistance Count: How many times the 5-second Idle Demo was triggered.
+
+5. UI/UX Style Guide
+
+Background: Solid #F5F5F5 (Neutral, low-eye-strain).
+
+Pointer Color: A distinct, semi-transparent blue or orange circle to provide clear contrast.
+
+Transition: 500ms cross-fade between tasks. No loading screens or menus.
+
+Audio (Optional): If requested later, use low-frequency, "soft" success tones.
