@@ -1,10 +1,9 @@
-
-import { db } from "./db";
+import { db } from './db';
 import {
   attempts,
   type InsertAttempt,
   type Attempt
-} from "@shared/schema";
+} from '../shared/schema';
 
 export interface IStorage {
   createAttempt(attempt: InsertAttempt): Promise<Attempt>;
