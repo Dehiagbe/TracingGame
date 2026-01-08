@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "buildCommand": "cd Adaptive-Trace-Gamification && npm install && npm run build",
+  "outputDirectory": "Adaptive-Trace-Gamification/dist/public",
+  "installCommand": "cd Adaptive-Trace-Gamification && npm install",
+  "builds": [
+    {
+      "src": "Adaptive-Trace-Gamification/api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "Adaptive-Trace-Gamification/api/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "Adaptive-Trace-Gamification/dist/public/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  }
+}
