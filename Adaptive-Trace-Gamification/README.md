@@ -227,9 +227,9 @@ vercel --prod
 
 2. Get your Neon database connection string from https://console.neon.tech
 
-3. Update `.env` with your actual database credentials:
+3. Update `.env` with your actual database credentials (replace the placeholder values):
    ```
-   DATABASE_URL=your_actual_neon_connection_string
+   DATABASE_URL=postgresql://your_username:your_password@your_hostname.neon.tech/your_database?sslmode=require&channel_binding=require
    ```
 
 4. Install dependencies:
