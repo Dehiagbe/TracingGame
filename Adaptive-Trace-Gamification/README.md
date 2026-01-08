@@ -218,12 +218,34 @@ vercel --prod
 
 ## Development
 
-**Local Development:**
-```bash
-cd Adaptive-Trace-Gamification
-npm install
-npm run dev
-```
+### Local Development Setup
+
+1. Copy the environment template:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Get your Neon database connection string from https://console.neon.tech
+
+3. Update `.env` with your actual database credentials:
+   ```
+   DATABASE_URL=your_actual_neon_connection_string
+   ```
+
+4. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+5. Push database schema:
+   ```bash
+   npm run db:push
+   ```
+
+6. Start development server:
+   ```bash
+   npm run dev
+   ```
 
 The Vite dev server will run on http://localhost:5173
 
