@@ -3,16 +3,11 @@
   "buildCommand": "cd Adaptive-Trace-Gamification && npm install && npm run build",
   "outputDirectory": "Adaptive-Trace-Gamification/dist",
   "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/api/attempts",
-      "destination": "/api/attempts"
-    },
-    {
-      "source": "/api/health",
-      "destination": "/api/health"
+  "functions": {
+    "Adaptive-Trace-Gamification/api/**/*.ts": {
+      "runtime": "@vercel/node@3.0.0"
     }
-  ],
+  },
   "env": {
     "NODE_ENV": "production"
   }
